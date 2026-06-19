@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blox Fruits Ultra Hard 20 Quiz</title>
+    <style>
+        body {
+            background: radial-gradient(circle, #0f172a, #020617);
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .quiz-container {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 520px;
+            text-align: center;
+            border: 2px solid #ec4899;
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.2);
+        }
+        h1 { color: #ec4899; font-size: 20px; margin-top: 0; text-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
+        .score-board { font-size: 18px; color: #fbbf24; margin-bottom: 15px; font-weight: bold; }
+        
+        .timer-circle {
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            border-radius: 50%;
+            background: #1e293b;
+            border: 4px solid #06b6d4;
+            font-size: 24px;
+            font-weight: bold;
+            color: #06b6d4;
+            margin: 10px auto;
+            transition: 0.2s;
+        }
+        
+        .question-card {
+            background: #0f172a;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.4;
+            border: 1px solid #1e293b;
+            text-align: left;
+        }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            background: #1e293b;
+            color: #fff;
+            border: 2px solid #334155;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+        }
+        .option-btn:hover { background: #334155; border-color: #ec4899; }
+        .option-btn.correct { background: #10b981 !important; border-color: #fff; }
+        .option-btn.wrong { background: #f43f5e !important; border-color: #fff; }
+        
+        .hidden { display: none !important; }
+        button.restart-btn {
+            background: #ec4899; color: white; border: none; padding: 14px;
+            font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;
+        }
+        button.restart-btn:hover { background: #f472b6; }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h1>☠️ Blox Fruits আল্ট্রা হার্ড কুইজ (২০টি প্রশ্ন) 🏴‍☠️</h1>
+        <div class="score-board">স্কোর: <span id="score">0</span> / ১০০</div>
+
+        <div id="quiz-box">
+            <div class="timer-circle" id="timer">10</div>
+            <div class="question-card" id="question-text">লোডিং...</div>
+            <div class="options-grid" id="options-box"></div>
+        </div>
+
+        <div id="result-box" class="hidden">
+            <h2>🎉 কুইজ সমাপ্ত!</h2>
+            <p style="font-size: 18px;">আপনার চূড়ান্ত কনভার্টড স্কোর: <span id="final-score">0</span> / ১০০</p>
+            <p id="rank-text" style="color: #fbbf24; font-weight: bold; font-size: 20px;"></p>
+            <button class="restart-btn" onclick="restartQuiz()">আবার চ্যালেঞ্জ নিন 🔄</button>
+        </div>
+    </div>
+
+<script>
+    // Celestial_Monarch-এর দেওয়া গড-লেভেল মেকানিক্সের ২০টি হার্ডকোর প্রশ্ন
+const quizData = [
+    { question: "১. Sea of Treats (Island 3 / Cake Land)-এ Cake Prince বা Dough King জাগ্রত করতে drip_mama-র অধীনে মোট কতটি NPC বধ করতে হয়?", options: ["100 টি", "250 টি", "500 টি", "1000 টি"], correct: 2 },
+    { question: "২. Dough King বসকে স্পন করার জন্য Sweet Chalice তৈরি করতে God's Chalice এর সাথে কতটি Conjured Cocoa প্রয়োজন?", options: ["5টি", "10টি", "12টি", "15টি"], correct: 1 },
+    { question: "৩. Dough King বসকে সফলভাবে স্পন করার পর তাকে মারার জন্য প্লেয়াররা সর্বোচ্চ কত মিনিট সময় পায়?", options: ["7 মিনিট", "10 মিনিট", "15 মিনিট", "20 মিনিট"], correct: 2 },
+    { question: "৪. Dough King-কে সফলভাবে বধ করার পর কোন অতি প্রয়োজনীয় Mythical আইটেমটি গ্যারান্টিড ড্রপ হিসেবে পাওয়া যায়?", options: ["Pale Scarf", "Spikey Trident", "Mirror Fractal", "Alucard Fragment"], correct: 2 },
+    { question: "৫. Dough King এবং Cake Prince উভয়ের কাছ থেকে পাওয়া Pale Scarf এবং Spikey Trident আইটেম দুটি কোন rarity শ্রেণীর অন্তর্ভুক্ত?", options: ["Rare", "Legendary", "Mythical", "Common"], correct: 1 },
+    { question: "৬. কোন Race-টি V3 বা V4 সক্রিয় করা ছাড়াই শুধুমাত্র Fighting Style বা Sword দিয়ে আঘাত করে নিজের হেলথ স্বয়ংক্রিয়ভাবে Heal (Life-Steal) করতে পারে?", options: ["Human", "Mink", "Shark", "Ghoul"], correct: 3 },
+    { question: "৭. ব্লক্স ফ্রুটসের কোন Race-টিকে গেমের অন্যতম 'All-in-One' রেস বলা হয়?", options: ["Cyborg", "Ghoul", "Angel", "Human"], correct: 1 },
+    { question: "৮. সাধারণত V3 এবিলিটি ডিফেন্সিভ বা বাফ দিলেও, কোন নির্দিষ্ট Race-এর V3 স্কিল অন করলেই চারপাশের শত্রুদের সরাসরি ড্যামেজ দেওয়া শুরু করে?", options: ["Human", "Cyborg", "Angel", "ghoul"], correct: 1 },
+    { question: "৯. গেমের কোন অতি পরিচিত Gun বা বন্দুকের স্পেশাল মুভ ব্যবহার করলে প্লেয়ারের হেলথ তাৎক্ষণিকভাবে Heal  হয়?", options: ["Soul Guitar", "Bizarre Rifle", "Kabucha", "Acidum Rifle"], correct: 0 },
+    { question: "১০. ড্যামেজ দেওয়ার পরিবর্তে গেমের কোন চমৎকার Fruit-টির ক্ষমতা ব্যবহার করে নিজের পাশাপাশি উল্টো Opponent বা শত্রুকেও Heal করা সম্ভব?", options: ["Buddha", "Phoenix", "Love", "Light"], correct: 1 },
+    { question: "১১. Dough Fruit রেইড আনলক করার জন্য কি দিতে হয়?", options: ["1000 Fragments", "যেকোনো Mythical Fruit", "1 Million মূল্যের যেকোনো Fruit", "কিলিং Bounty দিয়ে"], correct: 2 },
+    { question: "১২. গেমের মধ্যে Permanent Kitsune Fruit টি ডিলারের কাছ থেকে সরাসরি কিনতে কত Robux খরচ করতে হয়?", options: ["2000 Robux", "3000 Robux", "4000 Robux", "5000 Robux"], correct: 2 },
+    { question: "13. Dark Blade V3 আনলক করতে কি থাকতে হবে?", options: ["1টি Fist of Darkness", "2টি সাধারণ Fist of Darkness", "1টি Fist ও 1টি Core", "2টি ভিন্ন godchalice"], correct: 1 },
+    { question: "১৪. থার্ড সি-র অত্যন্ত শক্তিশালী এবং বর্তমান ম্যাপের সর্বোচ্চ লেভেল ক্যাপ (Max Level) কত করা হয়েছে?", options: ["লেভেল 2450", "লেভেল 2550", "লেভেল 2600", "লেভেল 2800"], correct: 3 },
+    { question: "১৫. Cursed Dual Katana (CDK) তলোয়ারটি পাওয়ার জন্য Yama এবং Tushita উভয় তলোয়ারে সর্বনিম্ন কত Mastery থাকা বাধ্যতামূলক?", options: ["300 Mastery", "350 Mastery", "400 Mastery", "600 Mastery"], correct: 1 },
+    { question: "১৬. কোন বিশেষ বসের টোটাল হেলথ (HP) গেমের ইতিহাসে সর্বোচ্চ 1,111,500 পর্যন্ত করা হয়েছে এবং যাকে হারানো সবচেয়ে কঠিন?", options: ["Dough King", "rip_indra", "Cake Prince", "Soul Reaper"], correct: 0 },
+    { question: "১৭. কিলার Bounty বা Honor পিভিপি না করে শুধুমাত্র সাধারণ প্লেয়ার বা বস মেরে ফ্রিতে সর্বোচ্চ কত পর্যন্ত বাড়ানো যায়?", options: ["2.5 Million", "5 Million", "7.5 Million", "10 Million"], correct: 0 },
+    { question: "১৮. সেকেন্ড সি-র Cursed Ship-এ অবস্থিত Ship Steward এর কাছ থেকে Ghoul Race আনলক করতে 100টি এক্টোপ্লাজমের সাথে আর কী লাগে?", options: ["God's Chalice", "Hellfire Torch", "Dark Fragment", "Vampire Fang"], correct: 1 },
+    { question: "১৯. থার্ড সি-তে Castle on the Sea দ্বীপে কত লেভেলের প্লেয়াররা সরাসরি 'Pirate Raid' রেইডে অংশ নিয়ে ফ্র্যাগমেন্ট জিততে পারে?", options: ["যেকোনো লেভেলের প্লেয়ার", "লেভেল 1500+", "লেভেল 1000+", "শুধুমাত্র ম্যাক্স লেভেলের"], correct: 0 },
+    { question: "২০. Awakened Buddha ফলের কোন ক্ষমতাটি ব্যবহার করলে প্লেয়ার জলের নিচে ডুবে না গিয়ে সম্পূর্ণ সোজা দাঁড়িয়ে থাকতে পারে এবং ড্যামেজ এড়িয়ে যায়?", options: ["Shift (Transformation)", "Giga Transformation", "Light Flight", "Water Walk"], correct: 0 }
+];
+
+let currentIdx = 0, rawScore = 0, timeLeft = 10, timerInterval = null, isAnswered = false;
+const maxPossibleRawScore = 20 * 5; 
+
+function loadQuestion() {
+    isAnswered = false; timeLeft = 10;
+    document.getElementById("timer").innerText = timeLeft;
+    document.getElementById("timer").style.borderColor = "#06b6d4";
+    document.getElementById("timer").style.color = "#06b6d4";
+    
+    const currentQuiz = quizData[currentIdx];
+    document.getElementById("question-text").innerText = currentQuiz.question;
+
+    const optionsBox = document.getElementById("options-box");
+    optionsBox.innerHTML = "";
+
+    currentQuiz.options.forEach((option, index) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = option;
+        btn.onclick = () => selectOption(index, btn);
+        optionsBox.appendChild(btn);
+    });
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = timeLeft;
+        if (timeLeft <= 5) {
+            document.getElementById("timer").style.borderColor = "#f43f5e";
+            document.getElementById("timer").style.color = "#f43f5e";
+        }
+        if (timeLeft === 0) { clearInterval(timerInterval); timeout(); }
+    }, 1000);
+}
+
+function selectOption(idx, btn) {
+    if (isAnswered) return; isAnswered = true; clearInterval(timerInterval);
+    const currentQuiz = quizData[currentIdx];
+    const allBtns = document.querySelectorAll(".option-btn");
+
+    if (idx === currentQuiz.correct) {
+        btn.classList.add("correct");
+        let pointsGained = 5; 
+        if (timeLeft <= 5) { pointsGained = (timeLeft / 5) * 5; }
+        if (pointsGained < 0.5) pointsGained = 0.5; 
+        rawScore += pointsGained;
+        document.getElementById("score").innerText = Math.round(rawScore);
+    } else {
+        btn.classList.add("wrong");
+        allBtns[currentQuiz.correct].classList.add("correct");
+    }
+    setTimeout(next, 1200);
+}
+
+function timeout() {
+    isAnswered = true;
+    const currentQuiz = quizData[currentIdx];
+    document.querySelectorAll(".option-btn")[currentQuiz.correct].classList.add("correct");
+    setTimeout(next, 1200);
+}
+
+function next() {
+    currentIdx++;
+    if (currentIdx < quizData.length) { loadQuestion(); } else { showResult(); }
+}
+
+function showResult() {
+    document.getElementById("quiz-box").classList.add("hidden");
+    document.getElementById("result-box").classList.remove("hidden");
+    
+    let finalScore = Math.round(rawScore);
+    document.getElementById("final-score").innerText = finalScore;
+    
+    const rankText = document.getElementById("rank-text");
+    if (finalScore >= 85) {
+        rankText.innerText = "👑Celestial Monarch level Unlocked!";
+    } else if (finalScore >= 50) {
+        rankText.innerText = "⚔️Best warrior Title unlocked!";
+    } else {
+        rankText.innerText = "⛵your TRASH! Try again noob garbage LOL do a new try";
+    }
+}
+
+function restartQuiz() {
+    currentIdx = 0; rawScore = 0;
+    document.getElementById("score").innerText = 0;
+    document.getElementById("quiz-box").classList.remove("hidden");
+    document.getElementById("result-box").classList.add("hidden");
+    loadQuestion();
+}
+
+loadQuestion();
+</script>
