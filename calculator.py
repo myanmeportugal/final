@@ -1,4 +1,4 @@
-mport main  # main.py ফাইলটিকে ইমপোর্ট করা হলো
+import main
 import unittest
 
 
