@@ -1,0 +1,12 @@
+Steps:
+Take any whole number as input.
+
+Divide that number by 2 using basic long division.
+
+Look at what is left over after the division.
+
+If the remainder is exactly 0, the number splits perfectly.
+
+Outcome A (Even): Print or state that the number is Even if there was no remainder, then stop.
+
+Outcome B (Odd): Print or state that the number is Odd if there was a remainder of 1, then stop.

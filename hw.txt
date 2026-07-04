@@ -1,0 +1,33 @@
+Algorithm for making a random number guessing game
+Steps:
+
+1.Start.
+
+2.Computer generates a secret random number.
+
+3.Take a guess number from the user.
+
+4.If guess is equal to secret number, print "You Win!" and finish.
+
+5.If guess is higher, print "Too High" and try again.
+
+6.If guess is lower, print "Too Low" and try again.
+
+7.End.
+
+Algorithm for finding Max/Min 
+Steps:
+
+1.Start.
+
+2.Take a list of numbers.
+
+3.Set the first number as both Max and Min.
+
+4.Compare Max and Min with the next numbers one by one.
+
+5.If a number is bigger, change Max. If smaller, change Min.
+
+6.Print Max and Min.
+
+7.End.
