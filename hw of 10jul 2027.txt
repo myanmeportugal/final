@@ -1,0 +1,34 @@
+                                   <----------------HW--------------->
+             <------------1. An Algorithm for making a random number guessing game------------>
+Steps:
+
+1.Start.
+
+2.Computer generates a secret random number.(কোড এ থাকবে)
+
+3.Take a guess number from the user.
+
+4.If guess is equal to secret number or the random number, print "You Win!" and finish.
+
+5.If guess is higher, print "The num isToo High" and try again.
+
+6.If guess is lower, print "The numToo Low" and try again.
+
+7.End.
+
+             <----------2. Algorithm for finding Max number(biggest) or Min number(smallest)----------> 
+Steps:
+
+1.Start.
+
+2.Take a list of numbers.
+
+3.Set the first number as both Max and Min.
+
+4.Compare Max and Min with the next numbers one by one.
+
+5.If a number is bigger, change Max. If smaller, change Min.
+
+6.Print Max and Min.
+
+7.End.
