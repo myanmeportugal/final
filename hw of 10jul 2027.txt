@@ -1,4 +1,3 @@
-                                   <----------------HW--------------->
              <------------1. An Algorithm for making a random number guessing game------------>
 Steps:
 
