@@ -1,5 +1,5 @@
 arr=[1,5,3,7,6]
-n=len(arr)#5
+n=len(arr)#5 length
 for i in range(n):
     for j in range(n-i-1):
         if arr[j]< arr[j+1]:
@@ -8,7 +8,7 @@ for i in range(n):
 print(arr)
 
 arr=[1,5,3,7,6]
-n=len(arr)#5
+n=len(arr)#5 length
 for i in range(n):
     for j in range(n-i-1):
         if arr[j]> arr[j+1]:
