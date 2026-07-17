@@ -1,4 +1,4 @@
-#i forgot
+#insertion
 arr = [1, 5, 3, 7, 6]
 count = 0
 n = len(arr)
